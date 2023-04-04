@@ -1,0 +1,213 @@
+import 'package:flutter/material.dart';
+import 'details.dart';
+import 'my_filter_chip.dart';
+import 'filter_chip_data.dart';
+import 'user_dashboard.dart';
+
+class MyForm extends StatefulWidget {
+  const MyForm({Key? key}) : super(key: key);
+
+  @override
+  State<MyForm> createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  final double spacing = 8;
+
+  final _productController = TextEditingController();
+  final _productDesController = TextEditingController();
+  bool? _listTileCheckBox = false;
+  List<FilterChipData> filterChips = FilterChips.all;
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _productController.dispose();
+    _productDesController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            "View Chat Request",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => HomePages(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: Container(
+          padding: EdgeInsets.all(20.0),
+          child: ListView(
+            children: [
+              const Text(
+                "Create Chat Request",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+              ),
+              const SizedBox(height: 10.0),
+              const Text(
+                  "Fill all the details regarding your request. No field should be left empty."),
+              const SizedBox(height: 30.0),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    MyTextField(
+                        myController: _productController,
+                        fieldName: "Title",
+                        myIcon: Icons.propane_outlined,
+                        prefixIconColor: Colors.deepPurple.shade300),
+                    const SizedBox(height: 10.0),
+                    MyTextField(
+                        myController: _productDesController,
+                        fieldName: "Description",
+                        myIcon: Icons.description_outlined,
+                        prefixIconColor: Colors.deepPurple.shade300),
+                    const SizedBox(height: 10.0),
+                    const Text(
+                      "Select appropriate tags: ",
+                      style: TextStyle(color: Colors.deepPurple, fontSize: 24),
+                    ),
+                    Wrap(
+                      runSpacing: spacing,
+                      spacing: spacing,
+                      children: filterChips
+                          .map(
+                            (filterChip) => FilterChip(
+                              label: Text(filterChip.label),
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: filterChip.color,
+                              ),
+                              backgroundColor:
+                                  filterChip.color.withOpacity(0.1),
+                              onSelected: (isSelected) => setState(() {
+                                filterChips = filterChips.map((otherChip) {
+                                  return filterChip == otherChip
+                                      ? otherChip.copy(isSelected: isSelected)
+                                      : otherChip;
+                                }).toList();
+                              }),
+                              selected: filterChip.isSelected,
+                              checkmarkColor: filterChip.color,
+                              selectedColor: filterChip.color.withOpacity(0.25),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    const SizedBox(height: 20.0),
+                    myBtn(context),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget buildFilterChips() => Wrap(
+        runSpacing: spacing,
+        spacing: spacing,
+        children: filterChips
+            .map((filterChip) => FilterChip(
+                  label: Text(filterChip.label),
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: filterChip.color,
+                  ),
+                  backgroundColor: filterChip.color.withOpacity(0.1),
+                  onSelected: (isSelected) => setState(() {
+                    filterChips = filterChips.map((otherChip) {
+                      return filterChip == otherChip
+                          ? otherChip.copy(isSelected: isSelected)
+                          : otherChip;
+                    }).toList();
+                  }),
+                  selected: filterChip.isSelected,
+                  checkmarkColor: filterChip.color,
+                  selectedColor: filterChip.color.withOpacity(0.25),
+                ))
+            .toList(),
+      );
+
+  OutlinedButton myBtn(BuildContext context) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Details(
+                productName: _productController.text,
+              );
+            },
+          ),
+        );
+      },
+      child: Text(
+        "Submit Form".toUpperCase(),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class MyTextField extends StatelessWidget {
+  const MyTextField({
+    Key? key,
+    required this.fieldName,
+    required this.myController,
+    this.myIcon = Icons.verified_user_outlined,
+    this.prefixIconColor = Colors.blueAccent,
+  }) : super(key: key);
+
+  final TextEditingController myController;
+  final String fieldName;
+  final IconData myIcon;
+  final Color prefixIconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        } else
+          null;
+      },
+      controller: myController,
+      decoration: InputDecoration(
+          labelText: fieldName,
+          prefixIcon: Icon(myIcon, color: prefixIconColor),
+          border: const OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurple.shade300),
+          ),
+          labelStyle: const TextStyle(color: Colors.deepPurple)),
+    );
+  }
+}
