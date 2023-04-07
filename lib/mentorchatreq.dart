@@ -56,6 +56,10 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
         itemCount: chatRequests.length,
         itemBuilder: (context, index) {
           ChatRequest chatRequest = chatRequests[index];
+
+          // Check if the chat request is accepted by the same mentor
+          bool isAcceptedByMentor = chatRequest.acceptedby == mentoremail;
+
           return Column(
             children: [
               ListTile(
@@ -63,24 +67,40 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
                 subtitle: Text('Tags: ${chatRequest.tags.join(', ')}\n'
                     'Description: ${chatRequest.description}\n'
                     'Created At: ${chatRequest.createdAt.toString()}'),
+                trailing: Text('acceptedby: ${chatRequest.acceptedby}'),
+                // Set tile color to green if accepted by the same mentor
+                tileColor: isAcceptedByMentor ? Colors.green : null,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Accept button callback
-                      _acceptChatRequest(context, chatRequest);
-                    },
-                    child: Text('Accept'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Reject button callback
-                    },
-                    child: Text('Reject'),
-                  ),
-                ],
+                children: isAcceptedByMentor
+                    ? [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Reject button callback
+                          },
+                          child: Text('Chat'),
+                          //change backgroundcolor to green
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                          ),
+                        ),
+                      ]
+                    : [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Accept button callback
+                            _acceptChatRequest(context, chatRequest);
+                          },
+                          child: Text('Accept'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Reject button callback
+                          },
+                          child: Text('Reject'),
+                        ),
+                      ],
               ),
               Divider(),
             ],
@@ -98,6 +118,7 @@ class ChatRequest {
   List<String> tags; // Tags associated with the chat request
   DateTime createdAt; // Time of chat request creation
   String user_id; // User ID of the chat request
+  String acceptedby; // User ID of the mentor who accepted the chat request
 
   ChatRequest({
     required this.title,
@@ -105,6 +126,7 @@ class ChatRequest {
     required this.tags,
     required this.createdAt,
     required this.user_id,
+    required this.acceptedby,
   });
 
   // Factory method to create a ChatRequest object from a Firestore DocumentSnapshot
@@ -116,6 +138,7 @@ class ChatRequest {
       tags: List.castFrom<dynamic, String>(data['tags'] ?? []),
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       user_id: data['user_id'] ?? '',
+      acceptedby: data['acceptedby'] ?? '',
     );
   }
 }
@@ -185,6 +208,11 @@ void _acceptChatRequest(BuildContext context, ChatRequest chatRequest) async {
                 .collection('chatRequests')
                 .doc(chatRequestDoc.id)
                 .update({'status': 'accepted'});
+
+            await FirebaseFirestore.instance
+                .collection('chatRequests')
+                .doc(chatRequestDoc.id)
+                .update({'acceptedby': mentoremail});
             // Show notification for successful acceptance
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Chat request accepted!'),

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'user_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,6 +100,7 @@ Welcome Mentor""",
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
                     onPressed: () {
+                      mentorLogout(context);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => MentorLoginPage(),
@@ -119,5 +122,31 @@ Welcome Mentor""",
         ),
       ),
     );
+  }
+}
+
+void mentorLogout(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    // Redirect to login screen after successful logout
+  } catch (e) {
+    print('Error logging out: $e');
+    // Show an error dialog if logout fails
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to logout. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }

@@ -232,7 +232,7 @@ Future<void> createChatRequest(
       'tags': tags,
       'status': 'pending', // set initial status as pending
       'createdAt': DateTime.now(), // set creation timestamp
-      'AcceptedBy': null,
+      'acceptedBy': '',
     });
     tags.clear();
     print('Chat request created successfully');
