@@ -1,7 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nitcsupport/admin_dashboard.dart';
 import 'my_filter_chip.dart';
 import 'filter_chip_data.dart';
-import 'admin_dashboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Future<void> addMentor(
+    String email, String password, List<String> tags, bool availability) async {
+  try {
+    // Create mentor in Firebase Authentication
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Create mentor document in Firestore
+    await FirebaseFirestore.instance
+        .collection('mentors')
+        .doc(userCredential.user!.uid)
+        .set({
+      'email': email,
+      'tags': tags,
+      'availability': availability,
+    });
+  } catch (e) {
+    // Handle any errors
+    print('Error adding mentor: $e');
+    throw e;
+  }
+}
 
 class add_mentors extends StatefulWidget {
   const add_mentors({Key? key}) : super(key: key);
@@ -19,7 +47,6 @@ class _add_mentorsState extends State<add_mentors> {
   List<FilterChipData> filterChips = FilterChips.all;
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   void dispose() {
     _productController.dispose();
@@ -27,36 +54,16 @@ class _add_mentorsState extends State<add_mentors> {
     super.dispose();
   }
 
+  CollectionReference mentors =
+      FirebaseFirestore.instance.collection('mentors');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "Add mentor",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1,
-            ),
-          ),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AdminDashboard(),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 30,
-            ),
-          ),
+          title: const Text("Form"),
           centerTitle: true,
-          elevation: 0,
+          backgroundColor: Color.fromARGB(255, 76, 116, 175),
         ),
         body: Container(
           padding: EdgeInsets.all(20.0),
@@ -73,15 +80,23 @@ class _add_mentorsState extends State<add_mentors> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    MyTextField(
-                        myController: _productController,
-                        fieldName: "Username",
-                        prefixIconColor: Color.fromARGB(255, 76, 116, 175)),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        hintText: 'Username',
+                        labelText: 'Username',
+                      ),
+                      controller: _productController,
+                    ),
                     const SizedBox(height: 10.0),
-                    MyTextField(
-                        myController: _productDesController,
-                        fieldName: "Password",
-                        prefixIconColor: Color.fromARGB(255, 76, 116, 175)),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        hintText: 'Password',
+                        labelText: 'Password',
+                      ),
+                      controller: _productDesController,
+                    ),
                     const SizedBox(height: 10.0),
                     const Text(
                       "Select appropriate tags: ",
@@ -154,12 +169,23 @@ class _add_mentorsState extends State<add_mentors> {
   OutlinedButton myBtn(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(
+      onPressed: () async {
+        Navigator.push(
+          context,
           MaterialPageRoute(
             builder: (context) => AdminDashboard(),
           ),
         );
+        List<String> tags = [];
+        filterChips.forEach((element) {
+          if (element.isSelected) {
+            tags.add(element.label);
+          }
+        });
+
+        String email = _productController.text;
+        String password = _productDesController.text;
+        addMentor(email, password, tags, true);
       },
       child: Text(
         "Submit".toUpperCase(),

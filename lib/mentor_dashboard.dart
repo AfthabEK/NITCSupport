@@ -5,6 +5,7 @@ import 'view_feedback.dart';
 import 'view_request.dart';
 import 'login_mentor.dart';
 import 'view_feedback.dart';
+import 'mentorchatreq.dart';
 
 class MentorDashboard extends StatefulWidget {
   const MentorDashboard({super.key});
@@ -53,7 +54,7 @@ Welcome Mentor""",
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => ViewRequest(),
+                          builder: (context) => ChatRequestListScreen(),
                         ),
                       );
                     },
@@ -99,7 +100,7 @@ Welcome Mentor""",
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => LoginMentor(),
+                          builder: (context) => MentorLoginPage(),
                         ),
                       );
                     },
