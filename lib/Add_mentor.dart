@@ -33,7 +33,7 @@ class _add_mentorsState extends State<add_mentors> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            "View Chat Request",
+            "Add mentor",
             style: TextStyle(
               color: Colors.black,
               fontSize: 22,

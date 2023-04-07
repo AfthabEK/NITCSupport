@@ -1,13 +1,17 @@
-import '../login_page.dart';
+import 'login_page.dart';
 import 'package:flutter/material.dart';
-import '../constants.dart';
-import '../models/question_model.dart';
-import '../widgets/question_widget.dart';
-import '../widgets/next_button.dart';
-import '../widgets/options.dart';
-import '../widgets/result.dart';
-import '../user_dashboard.dart';
-import '../form.dart';
+import 'constants.dart';
+import 'models/question_model.dart';
+import 'widgets/question_widget.dart';
+import 'widgets/next_button.dart';
+import 'widgets/options.dart';
+import 'widgets/result.dart';
+import 'user_dashboard.dart';
+import 'create_chatreq.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +19,8 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+String? user = '';
 
 int index = 0;
 bool isPressed = false;
@@ -130,6 +136,7 @@ class _HomePageState extends State<HomePage> {
   void nextQuestion() {
     select_index = -1;
     if (score > 5) {
+      signInAnonymously();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomePages(),
@@ -250,5 +257,36 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+}
+
+Future<void> signInAnonymously() async {
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+    print(userCredential.user?.uid.toString());
+    user = userCredential.user?.uid.toString();
+    // Once the user is signed in, you can access the user information using userCredential.user
+    // You can generate a random username for the user here and store it in your database
+    // You can also navigate to the next screen or perform other actions as needed
+  } catch (e) {
+    // Handle any errors that may occur during sign in
+    print('Failed to sign in anonymously: $e');
+  }
+}
+
+// ...
+
+Future<void> storeUsername(String userId, String username) async {
+  try {
+    await FirebaseFirestore.instance.collection('users').doc(userId).set({
+      'username': username,
+      // Add any other user information you want to store in the document
+    });
+    user = username;
+    // Username and other user information is stored in Firestore with the document ID as the user ID
+  } catch (e) {
+    // Handle any errors that may occur while storing the username
+    print('Failed to store username: $e');
   }
 }

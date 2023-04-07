@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:nitcsupport/form.dart';
+import 'package:nitcsupport/create_chatreq.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'view_req_user.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -29,11 +30,27 @@ class _HomePagesState extends State<HomePages> {
               ),
               TextButton.icon(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => MyForm(),
-                    ),
-                  );
+                  //if there is no chat request, then create a new chat request
+                  //else, view the chat request
+                  checkChatRequestExists(
+                          FirebaseAuth.instance.currentUser!.uid.toString())
+                      .then((value) {
+                    if (value) {
+                      //if chat request exists, then view the chat request
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomePages(),
+                        ),
+                      );
+                    } else {
+                      //if chat request does not exist, then create a new chat request
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => MyForm(),
+                        ),
+                      );
+                    }
+                  });
                 },
                 label: Text("Create Chat Request",
                     style: TextStyle(color: Colors.black)),
@@ -43,7 +60,13 @@ class _HomePagesState extends State<HomePages> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => ViewReqUser(),
+                          ),
+                        );
+                      },
                       child: Text("View chat request",
                           style: TextStyle(color: Colors.black))),
                   TextButton(
@@ -57,5 +80,24 @@ class _HomePagesState extends State<HomePages> {
         ),
       ),
     );
+  }
+}
+
+Future<bool> checkChatRequestExists(String user_id) async {
+  try {
+    // Create a reference to the 'chatRequests' collection in Firestore
+    CollectionReference chatRequestsRef =
+        FirebaseFirestore.instance.collection('chatRequests');
+
+    // Query the collection to check if a document with the given user ID exists
+    QuerySnapshot querySnapshot =
+        await chatRequestsRef.where('user_id', isEqualTo: user_id).get();
+
+    // If the query snapshot contains any documents, it means the chat request exists
+    return querySnapshot.docs.isNotEmpty;
+  } catch (e) {
+    // Handle any errors that may occur while checking for chat request existence
+    print('Failed to check chat request existence: $e');
+    return false;
   }
 }

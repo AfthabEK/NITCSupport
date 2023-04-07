@@ -102,3 +102,99 @@ class RequestItem extends StatelessWidget {
     );
   }
 }
+
+class RequestItemUser extends StatelessWidget {
+  final String title;
+  final String description;
+  final List<String> tags;
+  final VoidCallback onPressed;
+  final String status;
+  RequestItemUser({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.tags,
+    required this.status,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      child: ListTile(
+        onTap: () {
+          onPressed();
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        tileColor: Color(0xD9DAFFF0),
+        leading: Icon(
+          Icons.account_circle_sharp,
+          color: Colors.deepPurple,
+          size: 50,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: Colors.black,
+          ),
+        ),
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              description,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              "",
+              style: TextStyle(
+                fontSize: 8,
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  "Tag1",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    backgroundColor: Colors.blue,
+                    color: Colors.white,
+                  ),
+                ),
+                Text("\t"),
+                Text(
+                  "Tag2",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    backgroundColor: Colors.blue,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              "",
+              style: TextStyle(
+                fontSize: 8,
+              ),
+            ),
+            Text(
+              "HH:MM:SS",
+              style: TextStyle(
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

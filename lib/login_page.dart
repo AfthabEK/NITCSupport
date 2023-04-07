@@ -7,7 +7,7 @@ import 'widgets/question_widget.dart';
 import 'widgets/next_button.dart';
 import 'widgets/options.dart';
 import 'widgets/result.dart';
-import 'screens/home_page.dart';
+import 'question_pages.dart';
 import 'login_mentor.dart';
 
 class LoginPage extends StatefulWidget {

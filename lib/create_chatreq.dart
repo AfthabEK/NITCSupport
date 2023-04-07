@@ -165,11 +165,7 @@ class _MyFormState extends State<MyForm> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) {
-              return Details(
-                productName: _productController.text,
-              );
-            },
+            builder: (context) => HomePages(),
           ),
         );
         filterChips.forEach((element) {
@@ -178,7 +174,9 @@ class _MyFormState extends State<MyForm> {
           }
         });
         String description = _productDesController.text;
-        createChatRequest(_productController.text, description, tags);
+        String title = _productController.text;
+        String user_id = FirebaseAuth.instance.currentUser!.uid;
+        createChatRequest(user_id, title, description, tags);
       },
       child: Text(
         "Submit Form".toUpperCase(),
@@ -225,9 +223,10 @@ class MyTextField extends StatelessWidget {
 }
 
 Future<void> createChatRequest(
-    String title, String description, List<String> tags) async {
+    String user_id, String title, String description, List<String> tags) async {
   try {
     await FirebaseFirestore.instance.collection('chatRequests').add({
+      'user_id': user_id,
       'title': title,
       'description': description,
       'tags': tags,
