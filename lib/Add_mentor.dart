@@ -31,9 +31,32 @@ class _add_mentorsState extends State<add_mentors> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Form"),
+          backgroundColor: Colors.white,
+          title: Text(
+            "View Chat Request",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AdminDashboard(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 76, 116, 175),
+          elevation: 0,
         ),
         body: Container(
           padding: EdgeInsets.all(20.0),

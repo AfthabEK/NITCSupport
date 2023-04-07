@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'admin_dashboard.dart';
 import 'mentor_dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth.dart';
+
+//create an auth object
+auth authenticate = auth();
+String? userid;
+String Email = "";
+String Password = "";
 
 class LoginSGC extends StatelessWidget {
   const LoginSGC({Key? key}) : super(key: key);
@@ -92,6 +100,9 @@ class MainPage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       TextField(
+                        onChanged: (email) {
+                          Email = email;
+                        },
                         decoration: InputDecoration(
                             icon: const Icon(
                               Icons.drive_file_rename_outline,
@@ -106,6 +117,9 @@ class MainPage extends StatelessWidget {
                       ),
                       TextField(
                         obscureText: true,
+                        onChanged: (password) {
+                          Password = password;
+                        },
                         decoration: InputDecoration(
                             icon: const Icon(
                               Icons.vpn_key,
@@ -137,6 +151,11 @@ class MainPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                               splashColor: Colors.amber,
                               onTap: () {
+                                //userid = await authenticate.register_user(
+                                //  Email, Password);
+                                //if (userid != null) {
+                                //print(userid);
+                                //}
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => AdminDashboard(),

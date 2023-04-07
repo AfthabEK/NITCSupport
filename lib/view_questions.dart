@@ -21,7 +21,7 @@ class EditQuestionState extends State<EditQuestion> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.1,
+              //height: MediaQuery.of(context).size.height * 0.1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,

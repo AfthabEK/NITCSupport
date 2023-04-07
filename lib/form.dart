@@ -3,6 +3,9 @@ import 'details.dart';
 import 'my_filter_chip.dart';
 import 'filter_chip_data.dart';
 import 'user_dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MyForm extends StatefulWidget {
   const MyForm({Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class MyForm extends StatefulWidget {
   @override
   State<MyForm> createState() => _MyFormState();
 }
+
+List<String> tags = [];
 
 class _MyFormState extends State<MyForm> {
   final double spacing = 8;
@@ -167,6 +172,13 @@ class _MyFormState extends State<MyForm> {
             },
           ),
         );
+        filterChips.forEach((element) {
+          if (element.isSelected) {
+            tags.add(element.label);
+          }
+        });
+        String description = _productDesController.text;
+        createChatRequest(_productController.text, description, tags);
       },
       child: Text(
         "Submit Form".toUpperCase(),
@@ -209,5 +221,22 @@ class MyTextField extends StatelessWidget {
           ),
           labelStyle: const TextStyle(color: Colors.deepPurple)),
     );
+  }
+}
+
+Future<void> createChatRequest(
+    String title, String description, List<String> tags) async {
+  try {
+    await FirebaseFirestore.instance.collection('chatRequests').add({
+      'title': title,
+      'description': description,
+      'tags': tags,
+      'status': 'pending', // set initial status as pending
+      'createdAt': DateTime.now(), // set creation timestamp
+    });
+    tags.clear();
+    print('Chat request created successfully');
+  } catch (e) {
+    print('Failed to create chat request: $e');
   }
 }
