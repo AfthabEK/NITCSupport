@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'user_dashboard.dart';
+import 'ChatInitPage.dart';
 
 class ChatRequest {
   final String title;
@@ -18,6 +19,8 @@ class ChatRequest {
     required this.timeCreated,
   });
 }
+
+String muid = '';
 
 class ViewReqUser extends StatefulWidget {
   @override
@@ -116,9 +119,11 @@ class _ViewReqUserState extends State<ViewReqUser> {
                         ),
                         onTap: () {
                           //Navigate to home
+                          fetchAcceptedBy(FirebaseAuth.instance.currentUser!.uid
+                              .toString());
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => HomePages(),
+                              builder: (context) => ChatInitPage(id: muid),
                             ),
                           );
                         },
@@ -136,4 +141,23 @@ class _ViewReqUserState extends State<ViewReqUser> {
       ),
     );
   }
+}
+
+//function to fetch acceptedby from chatrequest collection given uid of user
+Future<String> fetchAcceptedBy(String uid) async {
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection('chatRequests')
+      .where('user_id', isEqualTo: uid)
+      .get();
+
+  String acceptedBy = '';
+  for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+    Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+    if (data != null) {
+      // Create a ChatRequest object from the fetched data
+      acceptedBy = data['acceptedBy'] ?? '';
+    }
+  }
+  muid = await acceptedBy;
+  return acceptedBy;
 }

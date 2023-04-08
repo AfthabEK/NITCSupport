@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'chatpage.dart';
+import 'ChatInitPage.dart';
 
 class ChatRequestListScreen extends StatefulWidget {
   @override
@@ -59,7 +60,8 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
           ChatRequest chatRequest = chatRequests[index];
 
           // Check if the chat request is accepted by the same mentor
-          bool isAcceptedByMentor = chatRequest.acceptedby == mentoremail;
+          bool isAcceptedByMentor =
+              chatRequest.acceptedby == FirebaseAuth.instance.currentUser!.uid;
 
           return Column(
             children: [
@@ -82,8 +84,8 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(
-                                  id: '',
+                                builder: (context) => ChatInitPage(
+                                  id: chatRequest.user_id.toString(),
                                 ),
                               ),
                             );
@@ -221,7 +223,7 @@ void _acceptChatRequest(BuildContext context, ChatRequest chatRequest) async {
             await FirebaseFirestore.instance
                 .collection('chatRequests')
                 .doc(chatRequestDoc.id)
-                .update({'acceptedby': mentoremail});
+                .update({'acceptedby': FirebaseAuth.instance.currentUser!.uid});
             // Show notification for successful acceptance
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Chat request accepted!'),
