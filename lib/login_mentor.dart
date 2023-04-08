@@ -271,32 +271,6 @@ class _MentorLoginPageState extends State<MentorLoginPage> {
   }
 }
 
-void mentorLogout(BuildContext context) async {
-  try {
-    await FirebaseAuth.instance.signOut();
-    // Redirect to login screen after successful logout
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/MentorLoginPage', (Route<dynamic> route) => false);
-  } catch (e) {
-    print('Error logging out: $e');
-    // Show an error dialog if logout fails
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to logout. Please try again.'),
-            actions: [
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
-}
+
 // Usage example:
 // Use MentorLoginPage in your app to show the mentor login page

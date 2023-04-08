@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'chatpage.dart';
 
 class ChatRequestListScreen extends StatefulWidget {
   @override
@@ -77,7 +78,15 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
                     ? [
                         ElevatedButton(
                           onPressed: () {
-                            // Reject button callback
+                            // Naviagate to ChatPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(
+                                  id: '',
+                                ),
+                              ),
+                            );
                           },
                           child: Text('Chat'),
                           //change backgroundcolor to green

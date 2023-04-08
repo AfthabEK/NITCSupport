@@ -33,7 +33,10 @@ dependencies:
   firebase_auth: ^4.4.0
   flutter:
     sdk: flutter
+  flutter_chat_types: ^3.6.0
+  flutter_firebase_chat_core: ^1.6.4
   flutter_survey: ^0.1.4
+  flutterfire_ui: ^0.4.3+20
   google_fonts: ^4.0.3
 
 dev_dependencies:
