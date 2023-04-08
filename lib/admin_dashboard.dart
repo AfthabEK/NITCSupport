@@ -1,3 +1,5 @@
+import 'package:nitcsupport/login_page.dart';
+
 import 'user_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -129,7 +131,13 @@ Welcome SGC Admin""",
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 100.0, vertical: 10.0),
