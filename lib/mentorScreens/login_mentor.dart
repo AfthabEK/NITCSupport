@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'admin_dashboard.dart';
+import '../adminScreens/adminDashboard.dart';
 import 'mentor_dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'auth.dart';
+import '../Logics/auth.dart';
 
 //create an auth object
 auth authenticate = auth();

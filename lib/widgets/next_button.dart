@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import '../comps/constants.dart';
 
 class NextButton extends StatelessWidget {
   const NextButton({Key? key, required this.nextQuestion}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nitcsupport/admin_dashboard.dart';
-import 'my_filter_chip.dart';
-import 'filter_chip_data.dart';
+import 'package:nitcsupport/adminScreens/adminDashboard.dart';
+import '../widgets/my_filter_chip.dart';
+import '../widgets/filter_chip_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> addMentor(

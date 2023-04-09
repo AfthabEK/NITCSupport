@@ -1,30 +1,25 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'chatpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'comps/styles.dart';
-import 'comps/widgets.dart';
+import '../comps/styles.dart';
+import '../comps/widgets.dart';
 import 'package:intl/intl.dart';
 
-class ChatInitPage extends StatefulWidget {
-  const ChatInitPage({Key? key, required this.id}) : super(key: key);
+class ChatPage extends StatefulWidget {
   final String id;
+  final String name;
+  const ChatPage({Key? key, required this.id, required this.name})
+      : super(key: key);
 
   @override
-  State<ChatInitPage> createState() => _ChatInitPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatInitPageState extends State<ChatInitPage> {
+class _ChatPageState extends State<ChatPage> {
   var roomId;
-
   @override
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
-    final String uid = FirebaseAuth.instance.currentUser!.uid;
-
     return Scaffold(
       backgroundColor: Colors.indigo.shade400,
       appBar: AppBar(
@@ -124,7 +119,7 @@ class _ChatInitPageState extends State<ChatInitPage> {
                       } else {
                         return Center(
                           child: Text(
-                            'No conversation found',
+                            'No conversion found',
                             style: Styles.h1()
                                 .copyWith(color: Colors.indigo.shade400),
                           ),

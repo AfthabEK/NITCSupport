@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import '../comps/constants.dart';
 
 class OptionCard extends StatelessWidget {
   const OptionCard({

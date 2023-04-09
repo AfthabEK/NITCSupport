@@ -1,14 +1,13 @@
-import 'question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'constants.dart';
+import 'comps/constants.dart';
 import 'models/question_model.dart';
 import 'widgets/question_widget.dart';
 import 'widgets/next_button.dart';
 import 'widgets/options.dart';
 import 'widgets/result.dart';
-import 'question_pages.dart';
-import 'login_mentor.dart';
+import 'userScreens/question_page.dart';
+import 'mentorScreens/login_mentor.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

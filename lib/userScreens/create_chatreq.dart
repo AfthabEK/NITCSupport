@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'details.dart';
-import 'my_filter_chip.dart';
-import 'filter_chip_data.dart';
+import '../widgets/my_filter_chip.dart';
+import '../widgets/filter_chip_data.dart';
 import 'user_dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'widgets.dart';
 import 'package:intl/intl.dart';
-import '../chatpage.dart';
+import '../mentorScreens/chatpage.dart';
 
 class AnimatedDialog extends StatefulWidget {
   final double height;

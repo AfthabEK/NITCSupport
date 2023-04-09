@@ -1,20 +1,22 @@
-import 'package:nitcsupport/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nitcsupport/mentorScreens/chatpage.dart';
 
-import 'user_dashboard.dart';
+import '../userScreens/user_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'view_feedback.dart';
-import 'Add_mentor.dart';
-import 'view_questions.dart';
+import 'login_mentor.dart';
+import 'view_feedback.dart';
+import 'mentorchatreq.dart';
 
-class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+class MentorDashboard extends StatefulWidget {
+  const MentorDashboard({super.key});
 
   @override
-  State<AdminDashboard> createState() => AdminDashboardState();
+  State<MentorDashboard> createState() => MentorDashboardState();
 }
 
-class AdminDashboardState extends State<AdminDashboard> {
+class MentorDashboardState extends State<MentorDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,6 @@ class AdminDashboardState extends State<AdminDashboard> {
         child: Column(
           children: [
             Container(
-              //height: MediaQuery.of(context).size.height * 0.9,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,47 +39,31 @@ class AdminDashboardState extends State<AdminDashboard> {
 
 
 
-Welcome SGC Admin""",
-                    style: TextStyle(fontSize: 27),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 211, 194, 194)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => add_mentors(),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 70.0, vertical: 10.0),
-                      child: Text("    Add mentors    ",
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18, color: Colors.black)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
 
-                  /**/
+
+
+Welcome Mentor""",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
                   TextButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ChatRequestListScreen(),
+                        ),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 70.0, vertical: 10.0),
-                      child: Text("   View mentors   ",
+                          horizontal: 20.0, vertical: 10.0),
+                      child: Text(" View Chat Requests/ Chat ",
                           style: GoogleFonts.plusJakartaSans(
                               fontSize: 18, color: Colors.black)),
                     ),
@@ -92,33 +77,16 @@ Welcome SGC Admin""",
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => EditQuestion(),
+                          builder: (context) => ViewFeedback(),
                         ),
                       );
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 70.0, vertical: 10.0),
-                      child: Text(" Edit Questions ",
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18, color: Colors.black)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 211, 194, 194)),
-                    ),
-                    onPressed: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40.0, vertical: 10.0),
-                      child: Text("Edit Self-help Content",
+                      child: Text("View feedback",
                           style: GoogleFonts.plusJakartaSans(
                               fontSize: 18, color: Colors.black)),
                     ),
@@ -132,16 +100,17 @@ Welcome SGC Admin""",
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      mentorLogout(context);
+                      Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => LoginPage(),
+                          builder: (context) => MentorLoginPage(),
                         ),
                       );
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 100.0, vertical: 10.0),
-                      child: Text(" Logout  ",
+                      child: Text("Log out",
                           style: GoogleFonts.plusJakartaSans(
                               fontSize: 18, color: Colors.black)),
                     ),
@@ -153,5 +122,31 @@ Welcome SGC Admin""",
         ),
       ),
     );
+  }
+}
+
+void mentorLogout(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    // Redirect to login screen after successful logout
+  } catch (e) {
+    print('Error logging out: $e');
+    // Show an error dialog if logout fails
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to logout. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }

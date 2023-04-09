@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../question_pages.dart';
-import '../constants.dart';
+import '../userScreens/question_page.dart';
+import '../comps/constants.dart';
 import '../models/question_model.dart';
 import '../widgets/question_widget.dart';
 import '../widgets/next_button.dart';
