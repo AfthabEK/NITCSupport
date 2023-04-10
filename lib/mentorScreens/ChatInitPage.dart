@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../comps/styles.dart';
 import '../comps/widgets.dart';
 import 'package:intl/intl.dart';
+import 'mentor_dashboard.dart';
 
 class ChatInitPage extends StatefulWidget {
   const ChatInitPage({Key? key, required this.id}) : super(key: key);
@@ -19,6 +20,38 @@ class ChatInitPage extends StatefulWidget {
 
 class _ChatInitPageState extends State<ChatInitPage> {
   var roomId;
+
+  Future<void> _closeChat() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get the reference to the current chat room
+    DocumentReference<Map<String, dynamic>> roomRef =
+        firestore.collection('Rooms').doc(roomId);
+
+    Map<String, dynamic> data = {
+      'message': 'The chat has been closed by the mentor',
+      'sent_by': FirebaseAuth.instance.currentUser!.uid,
+      'datetime': DateTime.now(),
+    };
+    firestore.collection('Rooms').doc(roomId).update({
+      'last_message_time': DateTime.now(),
+      'last_message': 'THE CHAT HAS BEEN CLOSED BY THE MENTOR',
+    });
+    firestore.collection('Rooms').doc(roomId).collection('messages').add(data);
+
+    // set availability of mentor to true
+    firestore
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'availability': true});
+
+    // navigate to chat requests page
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => (MentorDashboard()),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +65,24 @@ class _ChatInitPageState extends State<ChatInitPage> {
         title: Text(''),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              // Handle the selected option
+              if (value == 'closeChat') {
+                _closeChat();
+              } else if (value == 'sendWarning') {}
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem<String>(
+                value: 'closeChat',
+                child: Text('Close Chat'),
+              ),
+              PopupMenuItem<String>(
+                value: 'sendWarning',
+                child: Text('Send Warning'),
+              ),
+            ],
+          ),
         ],
       ),
       body: Column(
@@ -185,3 +235,6 @@ class _ChatInitPageState extends State<ChatInitPage> {
     );
   }
 }
+
+// close chat function
+

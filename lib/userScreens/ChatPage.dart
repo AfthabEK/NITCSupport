@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../comps/styles.dart';
 import '../comps/widgets.dart';
 import 'package:intl/intl.dart';
+import 'give_feedback.dart';
 
 class UserChatPage extends StatefulWidget {
   const UserChatPage({Key? key, required this.id}) : super(key: key);
@@ -70,6 +71,17 @@ class _ChatInitPageState extends State<UserChatPage> {
                                           itemCount: snap.data!.docs.length,
                                           reverse: true,
                                           itemBuilder: (context, i) {
+                                            if (snap.data!.docs[i]['message'] ==
+                                                'The chat has been closed by the mentor') {
+                                              //navigate to dasboard
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      GiveFeedback(),
+                                                ),
+                                              );
+                                            }
                                             return ChatWidgets.messagesCard(
                                                 snap.data!.docs[i]['sent_by'] ==
                                                     FirebaseAuth.instance

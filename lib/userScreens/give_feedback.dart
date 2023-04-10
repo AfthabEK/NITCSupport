@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_survey/flutter_survey.dart';
 
 class GiveFeedback extends StatefulWidget {
-  const GiveFeedback({super.key, required this.title});
-
-  final String title;
+  const GiveFeedback({super.key});
 
   @override
   State<GiveFeedback> createState() => _GiveFeedbackState();
