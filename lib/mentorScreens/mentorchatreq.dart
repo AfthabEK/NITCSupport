@@ -70,9 +70,9 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
                 subtitle: Text('Tags: ${chatRequest.tags.join(', ')}\n'
                     'Description: ${chatRequest.description}\n'
                     'Created At: ${chatRequest.createdAt.toString()}'),
-                trailing: Text('acceptedby: ${chatRequest.acceptedby}'),
-                // Set tile color to green if accepted by the same mentor
-                tileColor: isAcceptedByMentor ? Colors.green : null,
+                //trailing: Text('acceptedby: ${chatRequest.acceptedby}'),
+                // Set tile coreateSlor to green if accepted by the same mentor
+                //tileColor: isAcceptedByMentor ? Colors.green : null,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,6 +102,7 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
                           onPressed: () {
                             // Accept button callback
                             _acceptChatRequest(context, chatRequest);
+                            //navigate to chatinitpage
                           },
                           child: Text('Accept'),
                         ),
@@ -228,11 +229,29 @@ void _acceptChatRequest(BuildContext context, ChatRequest chatRequest) async {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Chat request accepted!'),
             ));
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatInitPage(
+                  id: chatRequest.user_id.toString(),
+                ),
+              ),
+            );
           } else {
             // Chat request status is already accepted, show error notification
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Chat request is already accepted.'),
             ));
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatInitPage(
+                  id: chatRequest.user_id.toString(),
+                ),
+              ),
+            );
           }
         } else {
           // Chat request data is null, show error notification

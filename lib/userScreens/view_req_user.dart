@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'user_dashboard.dart';
 import '../mentorScreens/ChatInitPage.dart';
+import 'ChatPage.dart';
 
 class ChatRequest {
   final String title;
@@ -51,7 +52,6 @@ class _ViewReqUserState extends State<ViewReqUser> {
         chatRequests.add(chatRequest);
       }
     }
-
     return chatRequests;
   }
 
@@ -123,7 +123,7 @@ class _ViewReqUserState extends State<ViewReqUser> {
                               .toString());
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ChatInitPage(id: muid),
+                              builder: (context) => UserChatPage(id: muid),
                             ),
                           );
                         },
