@@ -25,7 +25,7 @@ class _ChatInitPageState extends State<UserChatPage> {
 
     // Get the reference to the current chat room
     DocumentReference<Map<String, dynamic>> roomRef =
-        firestore.collection('Rooms').doc(roomId);
+        firestore.collection('Rooms').doc  assets:(roomId);
 
     Map<String, dynamic> data = {
       'message': 'THE CHAT HAS BEEN CLOSED BY THE STUDENT',
@@ -70,7 +70,10 @@ class _ChatInitPageState extends State<UserChatPage> {
             onSelected: (value) {
               // Handle the selected option
               if (value == 'closeChat') {
-                _closeChat();
+                setState(() {
+                  _closeChat();
+                });
+                
               } else if (value == 'sendWarning') {}
             },
             itemBuilder: (BuildContext context) => [
