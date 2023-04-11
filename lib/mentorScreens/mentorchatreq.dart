@@ -26,10 +26,8 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
       List<String> mentorPreferredTags) async {
     // Replace with mentor's preferred tags
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('chatRequests')
-          .where('status', isEqualTo: 'pending')
-          .get();
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('chatRequests').get();
       List<ChatRequest> matchingChatRequests = [];
       for (var docSnapshot in querySnapshot.docs) {
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
@@ -61,8 +59,8 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
           ChatRequest chatRequest = chatRequests[index];
 
           // Check if the chat request is accepted by the same mentor
-          bool isAcceptedByMentor =
-              chatRequest.acceptedBy == FirebaseAuth.instance.currentUser!.uid;
+          bool isAcceptedByMentor = chatRequest.acceptedBy ==
+              FirebaseAuth.instance.currentUser!.uid.toString();
 
           bool isPending = chatRequest.status == 'pending';
 

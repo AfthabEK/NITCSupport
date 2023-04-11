@@ -6,7 +6,7 @@ import 'package:nitcsupport/welcomePage.dart';
 class FeedbackPage extends StatefulWidget {
   final String mentorUid; // Mentor's UID passed from previous page
 
-  FeedbackPage({required this.mentorUid});
+  FeedbackPage({Key? key, required this.mentorUid}) : super(key: key);
 
   @override
   _FeedbackPageState createState() => _FeedbackPageState();
