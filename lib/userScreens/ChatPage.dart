@@ -126,14 +126,16 @@ class _ChatInitPageState extends State<UserChatPage> {
                                                           'The chat has been closed by the mentor')));
 
                                               //navogate to feedbackpage
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      (FeedbackPage(
-                                                          mentorUid:
-                                                              widget.id)),
-                                                ),
-                                              );
+                                              setState(() {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        (FeedbackPage(
+                                                            mentorUid:
+                                                                widget.id)),
+                                                  ),
+                                                );
+                                              });
 
                                               //navigate to dasboard
                                               //show snackbar 'chat has been closed by the mentor'

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../mentorScreens/view_feedback.dart';
 import 'addMentor.dart';
 import 'view_questions.dart';
+import 'viewmentors.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -74,7 +75,14 @@ Welcome SGC Admin""",
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromARGB(255, 211, 194, 194)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      //navigate ti view mentors
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ViewMentors(),
+                        ),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 70.0, vertical: 10.0),

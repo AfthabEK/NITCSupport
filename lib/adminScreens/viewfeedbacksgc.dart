@@ -3,23 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ViewFeedback extends StatefulWidget {
+  const ViewFeedback({Key? key, required this.muid}) : super(key: key);
+  final String muid;
   @override
   _ViewFeedbackState createState() => _ViewFeedbackState();
 }
 
 class _ViewFeedbackState extends State<ViewFeedback> {
-  late String mentorUid;
-
-  @override
-  void initState() {
-    super.initState();
-    // Fetch the logged-in mentor's UID
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      mentorUid = currentUser.uid;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +19,8 @@ class _ViewFeedbackState extends State<ViewFeedback> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('feedback')
-            .where('mentorUid', isEqualTo: mentorUid) // Filter by mentor's UID
+            .where('mentorUid',
+                isEqualTo: widget.muid) // Filter by mentor's UID
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

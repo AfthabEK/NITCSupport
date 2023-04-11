@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'login_mentor.dart';
 import 'viewfeedback.dart';
 import 'mentorchatreq.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MentorDashboard extends StatefulWidget {
   const MentorDashboard({super.key});
