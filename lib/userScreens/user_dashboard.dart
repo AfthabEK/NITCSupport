@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'view_req_user.dart';
 
-class HomePages extends StatefulWidget {
-  const HomePages({super.key});
+class UserDashboard extends StatefulWidget {
+  const UserDashboard({super.key});
 
   @override
-  State<HomePages> createState() => _HomePagesState();
+  State<UserDashboard> createState() => _UserDashboardState();
 }
 
-class _HomePagesState extends State<HomePages> {
+class _UserDashboardState extends State<UserDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +37,14 @@ class _HomePagesState extends State<HomePages> {
                       .then((value) {
                     if (value) {
                       //if chat request exists, then view the chat request
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => HomePages(),
+                          builder: (context) => UserDashboard(),
                         ),
                       );
                     } else {
                       //if chat request does not exist, then create a new chat request
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => MyForm(),
                         ),
@@ -61,7 +61,7 @@ class _HomePagesState extends State<HomePages> {
                 children: [
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => ViewReqUser(),
                           ),

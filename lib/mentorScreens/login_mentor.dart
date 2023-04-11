@@ -156,11 +156,20 @@ class MainPage extends StatelessWidget {
                                 //if (userid != null) {
                                 //print(userid);
                                 //}
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => AdminDashboard(),
-                                  ),
-                                );
+                                // if userid is sgc and password is 12345678 login, else say wrong password or username
+                                if (Email == "sgc" && Password == "12345678") {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AdminDashboard(),
+                                    ),
+                                  );
+                                } else {
+                                  //show snackbar wrong username or password
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Wrong username or password'),
+                                  ));
+                                }
                               },
                               child: const Center(
                                 child: Text(
@@ -241,7 +250,7 @@ class _MentorLoginPageState extends State<MentorLoginPage> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                labelText: 'Email',
+                labelText: 'Username',
               ),
             ),
             TextField(

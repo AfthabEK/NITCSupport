@@ -38,7 +38,7 @@ class _MyFormState extends State<MyForm> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            "View Chat Request",
+            "",
             style: TextStyle(
               color: Colors.black,
               fontSize: 22,
@@ -48,11 +48,7 @@ class _MyFormState extends State<MyForm> {
           ),
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => HomePages(),
-                ),
-              );
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -161,12 +157,7 @@ class _MyFormState extends State<MyForm> {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePages(),
-          ),
-        );
+        Navigator.of(context).pop();
         filterChips.forEach((element) {
           if (element.isSelected) {
             tags.add(element.label);
@@ -178,7 +169,7 @@ class _MyFormState extends State<MyForm> {
         createChatRequest(user_id, title, description, tags);
       },
       child: Text(
-        "Submit Form".toUpperCase(),
+        "Create Chat Request".toUpperCase(),
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );

@@ -137,17 +137,23 @@ class _HomePageState extends State<HomePage> {
     select_index = -1;
     if (score > 5) {
       signInAnonymously();
-      Navigator.of(context).push(
+      int index = 0;
+      bool isPressed = false;
+      int score = 0;
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomePages(),
+          builder: (context) => UserDashboard(),
         ),
       );
     }
     if (index == _questions.length - 1) {
       if (score > 5) {
-        Navigator.of(context).push(
+        int index = 0;
+        bool isPressed = false;
+        int score = 0;
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => HomePages(),
+            builder: (context) => UserDashboard(),
           ),
         );
       } else {
@@ -157,11 +163,7 @@ class _HomePageState extends State<HomePage> {
           int score = 0;
         });
 
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
-        );
+        Navigator.pop(context);
       }
     }
     ;

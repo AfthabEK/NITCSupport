@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nitcsupport/mentorScreens/chatpage.dart';
-
 import '../userScreens/user_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -101,11 +99,7 @@ Welcome Mentor""",
                     ),
                     onPressed: () {
                       mentorLogout(context);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => MentorLoginPage(),
-                        ),
-                      );
+                      Navigator.of(context).pop();
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

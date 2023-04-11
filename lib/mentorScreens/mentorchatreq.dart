@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'chatpage.dart';
 import 'ChatInitPage.dart';
 
 class ChatRequestListScreen extends StatefulWidget {
@@ -27,8 +26,11 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
       List<String> mentorPreferredTags) async {
     // Replace with mentor's preferred tags
     try {
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('chatRequests').get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('chatRequests')
+          .orderBy('createdAt', descending: false)
+          .where('status', isEqualTo: 'pending')
+          .get();
       List<ChatRequest> matchingChatRequests = [];
       for (var docSnapshot in querySnapshot.docs) {
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
@@ -62,6 +64,8 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
           // Check if the chat request is accepted by the same mentor
           bool isAcceptedByMentor =
               chatRequest.acceptedby == FirebaseAuth.instance.currentUser!.uid;
+
+          bool isPending = chatRequest.status == 'pending';
 
           return Column(
             children: [
@@ -131,7 +135,7 @@ class ChatRequest {
   DateTime createdAt; // Time of chat request creation
   String user_id; // User ID of the chat request
   String acceptedby; // User ID of the mentor who accepted the chat request
-
+  String status; // Status of the chat request
   ChatRequest({
     required this.title,
     required this.description,
@@ -139,6 +143,7 @@ class ChatRequest {
     required this.createdAt,
     required this.user_id,
     required this.acceptedby,
+    required this.status,
   });
 
   // Factory method to create a ChatRequest object from a Firestore DocumentSnapshot
@@ -151,6 +156,7 @@ class ChatRequest {
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       user_id: data['user_id'] ?? '',
       acceptedby: data['acceptedby'] ?? '',
+      status: data['status'] ?? '',
     );
   }
 }

@@ -73,14 +73,33 @@ class _ChatInitPageState extends State<UserChatPage> {
                                           itemBuilder: (context, i) {
                                             if (snap.data!.docs[i]['message'] ==
                                                 'The chat has been closed by the mentor') {
+                                              setState(() {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FeedbackPage(
+                                                            mentorUid:
+                                                                widget.id),
+                                                  ),
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                        content: Text(
+                                                            'The chat has been closed by the mentor')));
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FeedbackPage(
+                                                            mentorUid:
+                                                                widget.id),
+                                                  ),
+                                                );
+                                              });
+
                                               //navigate to dasboard
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      GiveFeedback(),
-                                                ),
-                                              );
+                                              //show snackbar 'chat has been closed by the mentor'
                                             }
                                             return ChatWidgets.messagesCard(
                                                 snap.data!.docs[i]['sent_by'] ==

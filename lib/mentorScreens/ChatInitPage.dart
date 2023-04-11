@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'chatpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class _ChatInitPageState extends State<ChatInitPage> {
         firestore.collection('Rooms').doc(roomId);
 
     Map<String, dynamic> data = {
-      'message': 'The chat has been closed by the mentor',
+      'message': 'THE CHAT HAS BEEN CLOSED BY THE MENTOR',
       'sent_by': FirebaseAuth.instance.currentUser!.uid,
       'datetime': DateTime.now(),
     };
@@ -41,7 +40,7 @@ class _ChatInitPageState extends State<ChatInitPage> {
 
     // set availability of mentor to true
     firestore
-        .collection('Users')
+        .collection('mentors')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({'availability': true});
 
