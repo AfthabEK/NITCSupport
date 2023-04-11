@@ -11,6 +11,7 @@ class ChatRequest {
   final List<String> tags;
   final String status;
   final Timestamp timeCreated;
+  final String acceptedBy;
 
   ChatRequest({
     required this.title,
@@ -18,6 +19,7 @@ class ChatRequest {
     required this.tags,
     required this.status,
     required this.timeCreated,
+    required this.acceptedBy,
   });
 }
 
@@ -48,6 +50,7 @@ class _ViewReqUserState extends State<ViewReqUser> {
           tags: List<String>.from(data['tags'] ?? []),
           status: data['status'] ?? '',
           timeCreated: data['timeCreated'] ?? Timestamp.now(),
+          acceptedBy: data['acceptedBy'] ?? '',
         );
         chatRequests.add(chatRequest);
       }
@@ -159,5 +162,6 @@ Future<String> fetchAcceptedBy(String uid) async {
     }
   }
   muid = await acceptedBy;
+  print(muid);
   return acceptedBy;
 }

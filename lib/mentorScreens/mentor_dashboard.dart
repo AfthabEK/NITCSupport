@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../userScreens/user_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'view_feedback.dart';
 import 'login_mentor.dart';
-import 'view_feedback.dart';
+import 'viewfeedback.dart';
 import 'mentorchatreq.dart';
 
 class MentorDashboard extends StatefulWidget {

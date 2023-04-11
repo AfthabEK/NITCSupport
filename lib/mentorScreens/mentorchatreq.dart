@@ -28,7 +28,6 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('chatRequests')
-          .orderBy('createdAt', descending: false)
           .where('status', isEqualTo: 'pending')
           .get();
       List<ChatRequest> matchingChatRequests = [];
@@ -63,7 +62,7 @@ class _ChatRequestListScreenState extends State<ChatRequestListScreen> {
 
           // Check if the chat request is accepted by the same mentor
           bool isAcceptedByMentor =
-              chatRequest.acceptedby == FirebaseAuth.instance.currentUser!.uid;
+              chatRequest.acceptedBy == FirebaseAuth.instance.currentUser!.uid;
 
           bool isPending = chatRequest.status == 'pending';
 
@@ -134,7 +133,7 @@ class ChatRequest {
   List<String> tags; // Tags associated with the chat request
   DateTime createdAt; // Time of chat request creation
   String user_id; // User ID of the chat request
-  String acceptedby; // User ID of the mentor who accepted the chat request
+  String acceptedBy; // User ID of the mentor who accepted the chat request
   String status; // Status of the chat request
   ChatRequest({
     required this.title,
@@ -142,7 +141,7 @@ class ChatRequest {
     required this.tags,
     required this.createdAt,
     required this.user_id,
-    required this.acceptedby,
+    required this.acceptedBy,
     required this.status,
   });
 
@@ -155,7 +154,7 @@ class ChatRequest {
       tags: List.castFrom<dynamic, String>(data['tags'] ?? []),
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       user_id: data['user_id'] ?? '',
-      acceptedby: data['acceptedby'] ?? '',
+      acceptedBy: data['acceptedBy'] ?? '',
       status: data['status'] ?? '',
     );
   }
@@ -230,7 +229,9 @@ void _acceptChatRequest(BuildContext context, ChatRequest chatRequest) async {
             await FirebaseFirestore.instance
                 .collection('chatRequests')
                 .doc(chatRequestDoc.id)
-                .update({'acceptedby': FirebaseAuth.instance.currentUser!.uid});
+                .update({
+              'acceptedBy': FirebaseAuth.instance.currentUser!.uid.toString()
+            });
             // Show notification for successful acceptance
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Chat request accepted!'),

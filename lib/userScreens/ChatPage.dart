@@ -20,6 +20,40 @@ class UserChatPage extends StatefulWidget {
 class _ChatInitPageState extends State<UserChatPage> {
   var roomId;
 
+  Future<void> _closeChat() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get the reference to the current chat room
+    DocumentReference<Map<String, dynamic>> roomRef =
+        firestore.collection('Rooms').doc(roomId);
+
+    Map<String, dynamic> data = {
+      'message': 'THE CHAT HAS BEEN CLOSED BY THE STUDENT',
+      'sent_by': FirebaseAuth.instance.currentUser!.uid,
+      'datetime': DateTime.now(),
+    };
+    firestore.collection('Rooms').doc(roomId).update({
+      'last_message_time': DateTime.now(),
+      'last_message': 'THE CHAT HAS BEEN CLOSED BY THE STUDENT',
+    });
+    firestore.collection('Rooms').doc(roomId).collection('messages').add(data);
+
+    // set availability of mentor to true
+    firestore
+        .collection('mentors')
+        .doc(widget.id)
+        .update({'availability': true});
+
+    // navigate to chat requests page
+    setState(() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => (FeedbackPage(mentorUid: widget.id)),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
@@ -32,7 +66,20 @@ class _ChatInitPageState extends State<UserChatPage> {
         title: Text(''),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              // Handle the selected option
+              if (value == 'closeChat') {
+                _closeChat();
+              } else if (value == 'sendWarning') {}
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem<String>(
+                value: 'closeChat',
+                child: Text('Close Chat'),
+              ),
+            ],
+          ),
         ],
       ),
       body: Column(
@@ -73,30 +120,20 @@ class _ChatInitPageState extends State<UserChatPage> {
                                           itemBuilder: (context, i) {
                                             if (snap.data!.docs[i]['message'] ==
                                                 'The chat has been closed by the mentor') {
-                                              setState(() {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        FeedbackPage(
-                                                            mentorUid:
-                                                                widget.id),
-                                                  ),
-                                                );
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content: Text(
-                                                            'The chat has been closed by the mentor')));
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        FeedbackPage(
-                                                            mentorUid:
-                                                                widget.id),
-                                                  ),
-                                                );
-                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          'The chat has been closed by the mentor')));
+
+                                              //navogate to feedbackpage
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      (FeedbackPage(
+                                                          mentorUid:
+                                                              widget.id)),
+                                                ),
+                                              );
 
                                               //navigate to dasboard
                                               //show snackbar 'chat has been closed by the mentor'

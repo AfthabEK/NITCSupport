@@ -158,6 +158,21 @@ class _ChatInitPageState extends State<ChatInitPage> {
                                           itemCount: snap.data!.docs.length,
                                           reverse: true,
                                           itemBuilder: (context, i) {
+                                            //if chat is closed, show message
+                                            if (snap.data!.docs[i]['message'] ==
+                                                'The chat has been closed by the student') {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          'The chat has been closed by the student')));
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      (MentorDashboard()),
+                                                ),
+                                              );
+                                            }
+
                                             return ChatWidgets.messagesCard(
                                                 snap.data!.docs[i]['sent_by'] ==
                                                     FirebaseAuth.instance

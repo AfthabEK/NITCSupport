@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       options: {
         'Near basketball court': true,
         'Near CCC': false,
-        'Above audiorium ': false,
+        'Above auditorium ': false,
         'Inside OAT': false,
       },
     ),
